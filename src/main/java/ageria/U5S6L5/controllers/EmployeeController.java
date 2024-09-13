@@ -78,7 +78,7 @@ public class EmployeeController {
         this.employeeService.findByIdAndDelete(employeeId);
         return "Employee Correctly DELETED";
         } catch(DataIntegrityViolationException ex){
-            throw new BadRequestException("YOU CANNOT DELETE A EMPLOYEE THAT IS LINKED TO A BOOKING");
+            throw new BadRequestException("YOU CANNOT DELETE AN EMPLOYEE THAT IS LINKED TO A BOOKING");
         }
     }
 
