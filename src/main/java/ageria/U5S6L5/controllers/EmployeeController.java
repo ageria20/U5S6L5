@@ -24,27 +24,44 @@ public class EmployeeController {
 
     // 1. GET
     @GetMapping
-    public String getProva(){
-        return "IT WORKS";
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Page<Employee> findAll(@RequestParam(defaultValue = "0") int pages,
+                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "id") String sortBy){
+        return this.employeeService.getAllEmployee(pages, size, sortBy);
     }
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public Page<Employee> findAll(@RequestParam(defaultValue = "0") int pages,
-//                                  @RequestParam(defaultValue = "10") int size,
-//                                  @RequestParam(defaultValue = "id") String sortBy){
-//        return this.employeeService.getAllEmployee(pages, size, sortBy);
-//    }
 
+    // 1.1 GET BY ID
+    @GetMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+
+    public Employee findById(@PathVariable Long employeeId){
+        return this.employeeService.findById(employeeId);
+    }
 
 
     //2. POST
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Employee createEmployee(@RequestBody @Validated EmployeeDTO body, BindingResult bindingResult){
-//        if(bindingResult.hasErrors()){
-//            String msg = (String) bindingResult.getAllErrors().stream().map(error ->error.getDefaultMessage()).collect(Collectors.joining());
-//            throw new BadRequestException(msg);
-//        }
-//        return this.employeeService.saveEmployee(body);
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee createEmployee(@RequestBody @Validated EmployeeDTO body, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            String msg = (String) bindingResult.getAllErrors().stream().map(error ->error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
+        return this.employeeService.saveEmployee(body);
+    }
+
+    @PutMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Employee updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeDTO body){
+        return this.employeeService.findByIdAndUpdate(employeeId, body);
+    }
+
+    @DeleteMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteEmploye(@PathVariable Long employeeId){
+        this.employeeService.findByIdAndDelete(employeeId);
+        return "Emplyee Correctly DELETED";
+    }
 
 }

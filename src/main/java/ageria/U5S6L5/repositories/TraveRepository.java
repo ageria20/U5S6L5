@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TraveRepository extends JpaRepository<Travel, Long> {
+
+    boolean existsByDestination(String destination);
 }

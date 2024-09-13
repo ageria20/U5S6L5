@@ -20,7 +20,7 @@ public class Employee {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String username;
     private String name;
     private String surname;
