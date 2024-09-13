@@ -2,6 +2,7 @@ package ageria.U5S6L5.services;
 
 
 import ageria.U5S6L5.dto.BookingDTO;
+import ageria.U5S6L5.dto.UpdateBookingDTO;
 import ageria.U5S6L5.entities.Booking;
 import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.entities.Travel;
@@ -48,10 +49,11 @@ public class BookingService {
     }
 
     // PUT
-    public Booking findByIdAndUpdate(Long id, BookingDTO body){
+    public Booking findByIdAndUpdate(Long id, UpdateBookingDTO body){
         Booking bookingFromDB = this.findByBookingId(id);
-        Booking newBooking = new Booking(body.bookingDate(), body.preference());
-        return this.saveBooking(newBooking);
+        bookingFromDB.setBookingDate(body.bookingDate());
+        bookingFromDB.setPreference(body.preference());
+        return this.bookingRepository.save(bookingFromDB);
     }
 
     // DELETE

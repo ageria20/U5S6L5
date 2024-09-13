@@ -2,6 +2,7 @@ package ageria.U5S6L5.controllers;
 
 
 import ageria.U5S6L5.dto.BookingDTO;
+import ageria.U5S6L5.dto.UpdateBookingDTO;
 import ageria.U5S6L5.entities.Booking;
 import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.services.BookingService;
@@ -51,7 +52,12 @@ public class BookingController {
         return this.bookingService.saveBooking(body);
     }
 
-
+//PUT
+    @PutMapping("/bookingId")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Booking updateBooking(@RequestBody UpdateBookingDTO body, @PathVariable Long bookingId){
+        
+    }
 
 
     // DELETE
