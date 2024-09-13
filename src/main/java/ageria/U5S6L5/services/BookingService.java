@@ -45,11 +45,13 @@ public class BookingService {
 
     // POST
     public Booking saveBooking(BookingDTO body){
-        if(bookingRepository.existsByBookingDateAndEmployeeId( LocalDate.now(), body.employeeId())){
-            throw new BadRequestException("The employee with id: " + body.employeeId() + " already has a Booking in this date: " + LocalDate.now());
-        }
         Travel travelFromDB = this.travelService.findById(body.travelId());
         Employee employeeFromDb = this.employeeService.findById(body.employeeId());
+        if(this.bookingRepository.existsByEmployeeAndTravelDate(employeeFromDb, travelFromDB.getDate()))
+             {
+                throw new BadRequestException("The employee with id: " + body.employeeId() + " already has a Booking in this date: " + LocalDate.now());
+            };
+
         Booking newBooking = new Booking(travelFromDB, employeeFromDb, LocalDate.now(), body.preference());
         return this.bookingRepository.save(newBooking);
     }

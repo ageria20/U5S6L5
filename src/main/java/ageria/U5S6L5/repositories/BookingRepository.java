@@ -11,4 +11,7 @@ import java.time.LocalDate;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByBookingDateAndEmployeeId( LocalDate travelDate, Long employee);
+
+
+    boolean existsByEmployeeAndTravelDate(Employee employee, LocalDate travelDate);
 }
