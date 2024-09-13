@@ -9,6 +9,7 @@ import ageria.U5S6L5.entities.Travel;
 import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -66,7 +67,11 @@ public class TravelController {
     @DeleteMapping("/{travelId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteEmploye(@PathVariable Long travelId){
-        this.travelService.findByIdAndDelete(travelId);
-        return "Travel Correctly DELETED";
+        try {
+            this.travelService.findByIdAndDelete(travelId);
+            return "Travel Correctly DELETED";
+        } catch(DataIntegrityViolationException ex){
+            throw new BadRequestException("YOU CANNOT DELETE A TRAVEL THAT IS LINKED TO A BOOKING");
+        }
     }
 }
