@@ -6,6 +6,7 @@ import ageria.U5S6L5.dto.UpdateBookingDTO;
 import ageria.U5S6L5.entities.Booking;
 import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.entities.Travel;
+import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.exception.NotFoundException;
 import ageria.U5S6L5.repositories.BookingRepository;
 import ageria.U5S6L5.repositories.EmployeeRepository;
@@ -42,6 +43,9 @@ public class BookingService {
 
     // POST
     public Booking saveBooking(BookingDTO body){
+        if(bookingRepository.existsByBookingDateAndEmployeeId(body.bookingDate(), body.employeeId())){
+            throw new BadRequestException("The employee with id: " + body.employeeId() + " already has a Booking in this date: " + body.bookingDate());
+        }
         Travel travelFromDB = this.travelService.findById(body.travelId());
         Employee employeeFromDb = this.employeeService.findById(body.employeeId());
         Booking newBooking = new Booking(travelFromDB, employeeFromDb, body.bookingDate(), body.preference());

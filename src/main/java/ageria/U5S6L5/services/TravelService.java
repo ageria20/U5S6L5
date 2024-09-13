@@ -49,7 +49,7 @@ public class TravelService {
     public Travel findByIdAndUpdateStatus(Long id, UpdateTravelStatusDTO body){
         Travel travelFromDb = this.findById(id);
         travelFromDb.setTravelStatus(body.travelStatus());
-        return travelFromDb;
+        return this.travelRepository.save(travelFromDb);
     }
 
     public void findByIdAndDelete(Long id){

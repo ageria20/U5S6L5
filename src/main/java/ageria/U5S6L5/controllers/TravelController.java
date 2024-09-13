@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/travel")
+@RequestMapping("/travels")
 public class TravelController {
 
     @Autowired
@@ -52,13 +52,14 @@ public class TravelController {
         return this.travelService.saveEmployee(body);
     }
 
-    @PutMapping("/{travelId}")
+    // PUT UPDATE STATUS
+    @PutMapping("/status/{travelId}")
     @ResponseStatus(HttpStatus.OK)
     public Travel updateEmployee(@PathVariable Long travelId, @RequestBody UpdateTravelStatusDTO body){
         return this.travelService.findByIdAndUpdateStatus(travelId, body);
     }
 
-    @DeleteMapping("/{employeeId}")
+    @DeleteMapping("/{travelId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteEmploye(@PathVariable Long travelId){
         this.travelService.findByIdAndDelete(travelId);
