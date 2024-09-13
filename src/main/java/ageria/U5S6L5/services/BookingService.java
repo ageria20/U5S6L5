@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class BookingService {
 
@@ -43,12 +45,12 @@ public class BookingService {
 
     // POST
     public Booking saveBooking(BookingDTO body){
-        if(bookingRepository.existsByBookingDateAndEmployeeId(body.bookingDate(), body.employeeId())){
+        if(bookingRepository.existsByBookingDateAndEmployeeId( body.bookingDate(), body.employeeId())){
             throw new BadRequestException("The employee with id: " + body.employeeId() + " already has a Booking in this date: " + body.bookingDate());
         }
         Travel travelFromDB = this.travelService.findById(body.travelId());
         Employee employeeFromDb = this.employeeService.findById(body.employeeId());
-        Booking newBooking = new Booking(travelFromDB, employeeFromDb, body.bookingDate(), body.preference());
+        Booking newBooking = new Booking(travelFromDB, employeeFromDb, LocalDate.now(), body.preference());
         return this.bookingRepository.save(newBooking);
     }
 
