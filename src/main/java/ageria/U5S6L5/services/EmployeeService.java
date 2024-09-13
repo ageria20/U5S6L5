@@ -77,7 +77,7 @@ public class EmployeeService {
             employeeFromDb.setAvatar(url);
             this.employeeRepository.save(employeeFromDb);
         } catch (IOException ex){
-            throw new MaxUploadSizeExceededException(id);
+            throw new MaxUploadSizeExceededException(avatar.getSize());
         }
     }
 
