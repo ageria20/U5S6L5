@@ -76,7 +76,7 @@ public class EmployeeController {
     public String deleteEmploye(@PathVariable Long employeeId){
         try{
         this.employeeService.findByIdAndDelete(employeeId);
-        return "Emplyee Correctly DELETED";
+        return "Employee Correctly DELETED";
         } catch(DataIntegrityViolationException ex){
             throw new BadRequestException("YOU CANNOT DELETE A EMPLOYEE THAT IS LINKED TO A BOOKING");
         }
