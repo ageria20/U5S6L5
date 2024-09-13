@@ -5,6 +5,7 @@ import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -73,8 +74,12 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteEmploye(@PathVariable Long employeeId){
+        try{
         this.employeeService.findByIdAndDelete(employeeId);
         return "Emplyee Correctly DELETED";
+        } catch(DataIntegrityViolationException ex){
+            throw new BadRequestException("YOU CANNOT DELETE A EMPLOYEE THAT IS LINKED TO A BOOKING");
+        }
     }
 
 }
