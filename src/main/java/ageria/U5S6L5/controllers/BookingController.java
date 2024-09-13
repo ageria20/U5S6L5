@@ -56,7 +56,7 @@ public class BookingController {
     @PutMapping("/bookingId")
     @ResponseStatus(HttpStatus.CREATED)
     public Booking updateBooking(@RequestBody UpdateBookingDTO body, @PathVariable Long bookingId){
-        
+        return this.bookingService.findByIdAndUpdate(bookingId, body);
     }
 
 

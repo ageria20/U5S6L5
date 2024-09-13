@@ -6,13 +6,17 @@ import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.exception.NotFoundException;
 import ageria.U5S6L5.repositories.EmployeeRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -20,6 +24,9 @@ public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    Cloudinary cloudinaryUploader;
 
     // 1. GET
     public Page<Employee> getAllEmployee(int pages, int size, String sortBy){
@@ -60,6 +67,13 @@ public class EmployeeService {
     public void findByIdAndDelete(Long id){
         Employee employeeToDelete = this.findById(id);
         this.employeeRepository.delete(employeeToDelete);
+    }
+
+    public void uploadImage(MultipartFile avatar, Long id) throws IOException {
+        Employee employeeFromDb = this.findById(id);
+        String url = (String) cloudinaryUploader.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap()).get("url");
+        employeeFromDb.setAvatar(url);
+        this.employeeRepository.save(employeeFromDb);
     }
 
 

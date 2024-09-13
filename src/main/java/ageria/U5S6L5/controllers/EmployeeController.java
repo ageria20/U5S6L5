@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,13 @@ public class EmployeeController {
             throw new BadRequestException(msg);
         }
         return this.employeeService.saveEmployee(body);
+    }
+
+    // 2.1 POST UPLOAD AVATAR
+    @PostMapping("/avatar/{employeeId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadEmployeeAvatar(@RequestParam("avatar")MultipartFile avatar, @PathVariable Long employeeId) throws IOException {
+        this.employeeService.uploadImage(avatar, employeeId);
     }
 
     @PutMapping("/{employeeId}")

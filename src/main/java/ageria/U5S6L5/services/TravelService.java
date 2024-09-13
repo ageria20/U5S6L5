@@ -3,6 +3,7 @@ package ageria.U5S6L5.services;
 
 import ageria.U5S6L5.dto.EmployeeDTO;
 import ageria.U5S6L5.dto.TravelDTO;
+import ageria.U5S6L5.dto.UpdateTravelStatusDTO;
 import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.entities.Travel;
 import ageria.U5S6L5.exception.BadRequestException;
@@ -43,11 +44,11 @@ public class TravelService {
 
     }
 
-    public Travel findByIdAndUpdate(Long id, TravelDTO body){
+
+
+    public Travel findByIdAndUpdateStatus(Long id, UpdateTravelStatusDTO body){
         Travel travelFromDb = this.findById(id);
-        travelFromDb.setDestination(body.destination());
         travelFromDb.setTravelStatus(body.travelStatus());
-        travelFromDb.setDate(body.travelDate());
         return travelFromDb;
     }
 

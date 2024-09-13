@@ -3,6 +3,7 @@ package ageria.U5S6L5.controllers;
 
 import ageria.U5S6L5.dto.EmployeeDTO;
 import ageria.U5S6L5.dto.TravelDTO;
+import ageria.U5S6L5.dto.UpdateTravelStatusDTO;
 import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.entities.Travel;
 import ageria.U5S6L5.exception.BadRequestException;
@@ -53,8 +54,8 @@ public class TravelController {
 
     @PutMapping("/{travelId}")
     @ResponseStatus(HttpStatus.OK)
-    public Travel updateEmployee(@PathVariable Long travelId, @RequestBody TravelDTO body){
-        return this.travelService.findByIdAndUpdate(travelId, body);
+    public Travel updateEmployee(@PathVariable Long travelId, @RequestBody UpdateTravelStatusDTO body){
+        return this.travelService.findByIdAndUpdateStatus(travelId, body);
     }
 
     @DeleteMapping("/{employeeId}")
