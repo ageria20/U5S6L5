@@ -6,6 +6,7 @@ import ageria.U5S6L5.dto.TravelDTO;
 import ageria.U5S6L5.dto.UpdateTravelStatusDTO;
 import ageria.U5S6L5.entities.Employee;
 import ageria.U5S6L5.entities.Travel;
+import ageria.U5S6L5.enums.TravelStatus;
 import ageria.U5S6L5.exception.BadRequestException;
 import ageria.U5S6L5.exception.NotFoundException;
 import ageria.U5S6L5.repositories.TraveRepository;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class TravelService {
@@ -36,18 +39,28 @@ public class TravelService {
     // 2. POST
     public Travel saveEmployee(TravelDTO body){
         if(travelRepository.existsByDestination(body.destination())){
-            throw new BadRequestException("Employee with this email already exists");
+            throw new BadRequestException("Travel with this destination already exists");
         }
-
         Travel newTravel = new Travel(body.destination(),body.travelDate(), body.travelStatus());
+
+
         return this.travelRepository.save(newTravel);
 
     }
 
-
+    public Travel autoStatusUpdate(Long id){
+        Travel travelFromDb = this.findById(id);
+        if (travelFromDb.getDate().isAfter(LocalDate.now())) {
+            travelFromDb.setTravelStatus(TravelStatus.COMPLETED);
+        } else {
+            travelFromDb.setTravelStatus(TravelStatus.SCHEDULED);
+        }
+        return this.travelRepository.save(travelFromDb);
+    }
 
     public Travel findByIdAndUpdateStatus(Long id, UpdateTravelStatusDTO body){
         Travel travelFromDb = this.findById(id);
+
         travelFromDb.setTravelStatus(body.travelStatus());
         return this.travelRepository.save(travelFromDb);
     }

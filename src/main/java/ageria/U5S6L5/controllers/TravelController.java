@@ -61,6 +61,7 @@ public class TravelController {
             String msg = (String) bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
             throw new BadRequestException(msg);
         }
+
         return this.travelService.findByIdAndUpdateStatus(travelId, body);
     }
 

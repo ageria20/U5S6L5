@@ -3,6 +3,7 @@ package ageria.U5S6L5.entities;
 import ageria.U5S6L5.enums.TravelStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +32,5 @@ public class Travel {
         this.date = date;
         this.travelStatus = travelStatus;
     }
+
 }
