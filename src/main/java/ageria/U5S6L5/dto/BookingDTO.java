@@ -13,8 +13,7 @@ public record BookingDTO(@NotNull(message = "Travel ID is required")
                          Long travelId,
                          @NotNull(message = "Employee ID is required")
                          Long employeeId,
-                         @NotNull(message = "The booking Date is required")
-                         LocalDate bookingDate,
+
                          @NotEmpty(message = "The preference is required")
                          String preference) {
 }

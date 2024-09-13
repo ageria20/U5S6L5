@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record UpdateBookingDTO(@NotNull(message = "Booking date is required to update")
-                               LocalDate bookingDate,
+public record UpdateBookingDTO(
                                @NotNull(message = "Preference is required to update")
                                String preference) {
 }
