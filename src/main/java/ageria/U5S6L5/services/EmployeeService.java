@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -69,11 +70,15 @@ public class EmployeeService {
         this.employeeRepository.delete(employeeToDelete);
     }
 
-    public void uploadImage(MultipartFile avatar, Long id) throws IOException {
-        Employee employeeFromDb = this.findById(id);
-        String url = (String) cloudinaryUploader.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap()).get("url");
-        employeeFromDb.setAvatar(url);
-        this.employeeRepository.save(employeeFromDb);
+    public void uploadImage(MultipartFile avatar, Long id) {
+        try {
+            Employee employeeFromDb = this.findById(id);
+            String url = (String) cloudinaryUploader.uploader().upload(avatar.getBytes(), ObjectUtils.emptyMap()).get("url");
+            employeeFromDb.setAvatar(url);
+            this.employeeRepository.save(employeeFromDb);
+        } catch (IOException ex){
+            throw new MaxUploadSizeExceededException(id);
+        }
     }
 
 

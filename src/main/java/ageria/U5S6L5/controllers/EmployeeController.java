@@ -56,7 +56,7 @@ public class EmployeeController {
     // 2.1 POST UPLOAD AVATAR
     @PostMapping("/avatar/{employeeId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadEmployeeAvatar(@RequestParam("avatar")MultipartFile avatar, @PathVariable Long employeeId) throws IOException {
+    public void uploadEmployeeAvatar(@RequestParam("avatar")MultipartFile avatar, @PathVariable Long employeeId) {
         this.employeeService.uploadImage(avatar, employeeId);
     }
 
