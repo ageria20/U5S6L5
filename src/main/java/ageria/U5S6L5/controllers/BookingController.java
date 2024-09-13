@@ -55,7 +55,11 @@ public class BookingController {
 //PUT
     @PutMapping("/bookingId")
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking updateBooking(@RequestBody UpdateBookingDTO body, @PathVariable Long bookingId){
+    public Booking updateBooking(@RequestBody UpdateBookingDTO body, @PathVariable Long bookingId, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            String msg = (String) bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
         return this.bookingService.findByIdAndUpdate(bookingId, body);
     }
 

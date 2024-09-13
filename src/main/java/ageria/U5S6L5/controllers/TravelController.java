@@ -55,7 +55,11 @@ public class TravelController {
     // PUT UPDATE STATUS
     @PutMapping("/status/{travelId}")
     @ResponseStatus(HttpStatus.OK)
-    public Travel updateEmployee(@PathVariable Long travelId, @RequestBody UpdateTravelStatusDTO body){
+    public Travel updateEmployee(@PathVariable Long travelId, @RequestBody UpdateTravelStatusDTO body, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            String msg = (String) bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
         return this.travelService.findByIdAndUpdateStatus(travelId, body);
     }
 

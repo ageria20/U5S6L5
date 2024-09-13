@@ -62,7 +62,11 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeDTO body){
+    public Employee updateEmployee(@PathVariable Long employeeId, @RequestBody EmployeeDTO body, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            String msg = (String) bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining());
+            throw new BadRequestException(msg);
+        }
         return this.employeeService.findByIdAndUpdate(employeeId, body);
     }
 
